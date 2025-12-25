@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TodoState } from "./todoTypes";
-import { fetchTodos , addTodo} from "./todoThunks";
+import { fetchTodos , addTodo, updateTodo} from "./todoThunks";
 
 const initialState: TodoState = {
   todos: [],
@@ -47,8 +47,7 @@ const todoSlice = createSlice({
 
   // Add new todo at the top
   state.todos.unshift(action.payload);
-
-  // Keep page size to 10
+  // remove the last one,if exceeds limit
   if (state.todos.length > state.limit) {
     state.todos.pop();
   }
@@ -58,7 +57,28 @@ const todoSlice = createSlice({
 .addCase(addTodo.rejected, (state, action) => {
   state.loading = false;
   state.error = action.payload || "Failed to add todo";
+})
+
+// Updating TODO
+.addCase(updateTodo.pending, (state) => {
+  state.loading = true;
+})
+.addCase(updateTodo.fulfilled, (state, action) => {
+  state.loading = false;
+
+  const index = state.todos.findIndex(
+    (todo) => todo.id === action.payload.id
+  );
+
+  if (index !== -1) {
+    state.todos[index] = action.payload;
+  }
+})
+.addCase(updateTodo.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload || "Failed to update todo";
 });
+
 
   },
 });

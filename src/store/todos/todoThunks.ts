@@ -43,3 +43,23 @@ export const addTodo = createAsyncThunk<
   }
 });
 
+export const updateTodo = createAsyncThunk<
+  Todo,
+  { id: number; todo: string; completed: boolean },
+  { rejectValue: string }
+>("todos/updateTodo", async ({ id, todo, completed }, { rejectWithValue }) => {
+  try {
+    const response = await axios.put(
+      `https://dummyjson.com/todos/${id}`,
+      {
+        todo,
+        completed,
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    return rejectWithValue("Failed to update todo");
+  }
+});
+

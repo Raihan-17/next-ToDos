@@ -34,12 +34,12 @@ export default function HomePage() {
       dispatch(setSkip(skip - limit));
     }
   };
-  const handleAddTodo = () => {
-  if (!newTodo.trim()) return;
+//   const handleAddTodo = () => {
+//   if (!newTodo.trim()) return;
 
-  dispatch(addTodo({ todo: newTodo }));
-  setNewTodo("");
-};
+//   dispatch(addTodo({ todo: newTodo }));
+//   setNewTodo("");
+// };
 
 
   return (

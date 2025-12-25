@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TodoState } from "./todoTypes";
-import { fetchTodos } from "./todoThunks";
+import { fetchTodos , addTodo} from "./todoThunks";
 
 const initialState: TodoState = {
   todos: [],
@@ -36,7 +36,30 @@ const todoSlice = createSlice({
       .addCase(fetchTodos.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";
-      });
+      })
+
+      // Adding TODO
+      .addCase(addTodo.pending, (state) => {
+  state.loading = true;
+})
+.addCase(addTodo.fulfilled, (state, action) => {
+  state.loading = false;
+
+  // Add new todo at the top
+  state.todos.unshift(action.payload);
+
+  // Keep page size to 10
+  if (state.todos.length > state.limit) {
+    state.todos.pop();
+  }
+
+  state.total += 1;
+})
+.addCase(addTodo.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload || "Failed to add todo";
+});
+
   },
 });
 

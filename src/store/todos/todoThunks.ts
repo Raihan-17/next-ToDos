@@ -63,3 +63,17 @@ export const updateTodo = createAsyncThunk<
   }
 });
 
+export const deleteTodo = createAsyncThunk<
+  number,
+  { id: number },
+  { rejectValue: string }
+>("todos/deleteTodo", async ({ id }, { rejectWithValue }) => {
+  try {
+    await axios.delete(`https://dummyjson.com/todos/${id}`);
+    return id;
+  } catch (error) {
+    return rejectWithValue("Failed to delete todo");
+  }
+});
+
+

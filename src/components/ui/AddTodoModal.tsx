@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,7 +45,13 @@ export function AddTodoModal({ open, onClose }: AddTodoModalProps) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Todo</DialogTitle>
+          <DialogHeader>
+  <DialogTitle>Add New Todo</DialogTitle>
+  <DialogDescription>
+    Enter todo details and assign a user.
+  </DialogDescription>
+</DialogHeader>
+
         </DialogHeader>
 
         <div className="space-y-4">

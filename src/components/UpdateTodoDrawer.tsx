@@ -11,6 +11,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerFooter,
+  DrawerDescription
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,7 +46,7 @@ export function UpdateTodoDrawer({
     dispatch(
       updateTodo({
         id: todo.id,
-        todo: text,
+        todo: text.trim(),
         completed,
       })
     );
@@ -58,6 +59,9 @@ export function UpdateTodoDrawer({
       <DrawerContent className="p-4">
         <DrawerHeader>
           <DrawerTitle>Edit Todo</DrawerTitle>
+          <DrawerDescription>
+            Update the details of the todo item.
+          </DrawerDescription>
         </DrawerHeader>
 
         <div className="space-y-4">
@@ -70,9 +74,10 @@ export function UpdateTodoDrawer({
           <div className="flex items-center gap-2">
             <Checkbox
               checked={completed}
-              onCheckedChange={(value) =>
-                setCompleted(Boolean(value))
-              }
+              onCheckedChange={(value) =>{
+                if(value === "indeterminate") return;
+                setCompleted(value);
+              }}
             />
             <span>Completed</span>
           </div>

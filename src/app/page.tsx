@@ -8,6 +8,9 @@ import { addTodo } from "@/store/todos/todoThunks";
 import { useState } from "react";
 import { AddTodoModal } from "@/components/ui/AddTodoModal";
 import { Button } from "@/components/ui/button";
+import { UpdateTodoDrawer } from "@/components/UpdateTodoDrawer";
+import { Todo } from "@/store/todos/todoTypes";
+
 
 
 export default function HomePage() {
@@ -17,6 +20,8 @@ export default function HomePage() {
   );
   const [newTodo, setNewTodo] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
 
   useEffect(() => {
@@ -70,6 +75,7 @@ export default function HomePage() {
                 <th className="border p-2">ID</th>
                 <th className="border p-2">Todo</th>
                 <th className="border p-2">Completed</th>
+                <th className="border p-2">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -77,8 +83,26 @@ export default function HomePage() {
                 <tr key={todo.id}>
                   <td className="border p-2">{todo.id}</td>
                   <td className="border p-2">{todo.todo}</td>
+                  <td className="border p-2 text-center">
+                      <span
+                        className={`px-2 py-1 rounded text-sm ${
+                          todo.completed
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {todo.completed ? "Completed" : "Pending"}
+                      </span>
+                  </td>
                   <td className="border p-2">
-                    {todo.completed ? "✅" : "❌"}
+                    <Button
+                      onClick={() => {
+                        setSelectedTodo(todo);
+                        setDrawerOpen(true);
+                      }}
+                    >
+                      Edit
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -107,6 +131,17 @@ export default function HomePage() {
               Next
             </button>
           </div>
+
+         <UpdateTodoDrawer
+           open={drawerOpen}
+           todo={selectedTodo}
+           onClose={() => {
+             setDrawerOpen(false);
+             setSelectedTodo(null);
+      }}
+/>
+
+
         </>
       )}
     </main>

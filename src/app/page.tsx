@@ -10,6 +10,7 @@ import { AddTodoModal } from "@/components/ui/AddTodoModal";
 import { Button } from "@/components/ui/button";
 import { UpdateTodoDrawer } from "@/components/UpdateTodoDrawer";
 import { Todo } from "@/store/todos/todoTypes";
+import { DeleteTodoDialog } from "@/components/DeleteTodoDialog";
 
 
 
@@ -22,6 +23,9 @@ export default function HomePage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
+
 
 
   useEffect(() => {
@@ -103,6 +107,16 @@ export default function HomePage() {
                     >
                       Edit
                     </Button>
+
+                    <Button
+                      variant="destructive"
+                      onClick={() => {
+                        setDeleteOpen(true);
+                        setDeleteTodoId(todo.id);
+                      }}
+                    >
+                      Delete
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -138,8 +152,17 @@ export default function HomePage() {
            onClose={() => {
              setDrawerOpen(false);
              setSelectedTodo(null);
-      }}
-/>
+          }}
+          />
+          <DeleteTodoDialog
+            open={deleteOpen}
+            todoId={deleteTodoId}
+            onClose={() => {
+              setDeleteOpen(false);
+              setDeleteTodoId(null);
+            }}
+          />
+
 
 
         </>

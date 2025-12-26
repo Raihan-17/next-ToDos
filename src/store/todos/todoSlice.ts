@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { TodoState } from "./todoTypes";
-import { fetchTodos , addTodo, updateTodo} from "./todoThunks";
+import { fetchTodos , addTodo, updateTodo, deleteTodo} from "./todoThunks";
 
 const initialState: TodoState = {
   todos: [],
@@ -77,7 +77,31 @@ const todoSlice = createSlice({
 .addCase(updateTodo.rejected, (state, action) => {
   state.loading = false;
   state.error = action.payload || "Failed to update todo";
+})
+      // Deleting TODO
+
+  .addCase(deleteTodo.pending, (state) => {
+  state.loading = true;
+})
+.addCase(deleteTodo.fulfilled, (state, action) => {
+  state.loading = false;
+
+  state.todos = state.todos.filter(
+    (todo) => todo.id !== action.payload
+  );
+
+  state.total -= 1;
+
+  // Pagination edge case:
+  if (state.todos.length === 0 && state.skip > 0) {
+    state.skip -= state.limit;
+  }
+})
+.addCase(deleteTodo.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload || "Failed to delete todo";
 });
+    
 
 
   },

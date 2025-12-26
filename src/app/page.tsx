@@ -45,19 +45,33 @@ const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
     }
   };
 
+ function tableHead() {
+  return "border border-purple-400 p-2";
+}
+
+function tableCell() {
+  return "border border-purple-400 p-2 text-center";
+}
+
   return (
-    //frosted container
-    <main className="p-6 md:my-4  max-w-4xl mx-auto  backdrop-blur-md bg-white/30 md:rounded-lg">
-      <h1 className="text-3xl text-[#081d2e] text-center font-bold mb-4">NEXT TODO LIST</h1>
+    //frosted container 39315a
+  <main className="p-6 md:my-4 md:max-w-4xl mx-auto  bg-[#0f0c17] md:rounded-lg">
+      <h1 className="text-4xl bg-gradient-to-r from-fuchsia-400 to-violet-800 bg-clip-text text-transparent text-center font-bold mb-4">
+  NEXT TODO LIST
+</h1>
+
 
 <div className="flex items-center gap-3 justify-between mb-6">
   <div>
-    <p className="text-[#ddeffe] ">
+    <p className="text-violet-300 font-medium">
       From Plan to Done. Conquer Your Calendar. Tasks Simplified, Focus Maximized.
     </p>
   </div>
 
-  <Button onClick={() => setModalOpen(true)}>
+  <Button
+    variant={"main"}
+    onClick={() => setModalOpen(true)}
+  >
     + Add Todo
   </Button>
 </div>
@@ -72,8 +86,8 @@ const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
 
       {loading && (
   <div className="flex h-screen flex-col items-center justify-center py-16 gap-2">
-    <Loader2 className="h-15 w-15 animate-spin text-[#bdc1ed]" />
-    <span className="text-xl text-[#d5d7f2]">
+    <Loader2 className="h-15 w-15 animate-spin text-purple-600" />
+    <span className="text-xl text-fuchsia-700 font-medium">
       Loading todos...
     </span>
   </div>
@@ -82,36 +96,38 @@ const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
 
       {!loading && !error && (
         <>
-          <table className="w-full overflow-x-auto">
+          <table className="w-full bg-purple-200 overflow-x-auto">
             <thead>
-              <tr className="bg-[#b4b9ef] text-[#073256]">
-                <th className="border p-2">ID</th>
-                {/* <th className="border p-2">ID</th> */}
-                <th className="border p-2">Todo</th>
-                <th className="border p-2">Status</th>
-                <th className="border p-2">Actions</th>
+              <tr className="bg-gradient-to-r from-purple-600 to-fuchsia-700 text-[#073256]">
+                <th className={tableHead()}>ID</th>
+                {/* <th className="border d:flex p-2">User ID</th> */}
+                <th className={tableHead()}>Todo</th>
+                <th className={tableHead()}>Status</th>
+                <th className={tableHead()}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {todos.map((todo) => (
                 <tr key={todo.id}>
-                  <td className="border p-2 text-center">{todo.id}</td>
-                  {/* <td className="border p-2 text-center">{todo.userId}</td> */}
-                  <td className="border p-2 text-center font-medium">{todo.todo}</td>
-                  <td className="border p-2 text-center">
+                  <td className={tableCell()}>{todo.id}</td>
+                  
+                  {/* <td className=" border  hidden md:flex p-2 text-center">{todo.userId}</td> */}
+                  <td className={tableCell()}>{todo.todo}</td>
+                  <td className={tableCell()}>
                       <span
                         className={`px-2 py-1  rounded text-sm ${
                           todo.completed
-                            ? "bg-green-200 text-green-700"
-                            : "bg-red-300 text-red-800"
+                            ? "bg-green-300 shadow-md text-green-900"
+                            : "bg-yellow-300 shadow-md text-yellow-900"
                         }`}
                       >
                         {todo.completed ? "Completed" : "Pending"}
                       </span>
                   </td>
-                <td className="border p-2 align-middle">
+                <td className="border border-purple-400 p-2 align-middle">
   <div className="flex flex-col gap-2">
     <Button
+      variant={"main-2"}
       size="sm"
       onClick={() => {
         setSelectedTodo(todo);
@@ -123,7 +139,7 @@ const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
 
     <Button
       size="sm"
-      variant="destructive"
+      variant="mainOut"
       onClick={() => {
         setDeleteOpen(true);
         setDeleteTodoId(todo.id);
@@ -153,7 +169,7 @@ const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
              Page {Math.floor(skip / limit) + 1} of {Math.ceil(total / limit)}
            </span>
            <Button
-             className="bg-[#9fa5e5] text-[#0a3d67] hover:bg-[#7f86d2] transform-3d duration-300 hover:scale-115"
+             variant="page"
              size="sm"
              onClick={handleNext}
              disabled={skip + limit >= total}

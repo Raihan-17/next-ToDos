@@ -19,7 +19,11 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        page: "bg-[#9fa5e5] text-[#0a3d67] hover:bg-[#7f86d2] transform-3d duration-300 hover:scale-115"
+        page: "bg-[#9fa5e5] text-[#0a3d67] hover:bg-[#7f86d2] transform-3d duration-300 hover:scale-115",
+        main: "bg-gradient-to-br from-violet-600 to-fuchsia-800 text-white hover:bg-fuchsia-400 duration-300 transition-3d hover:scale-105",
+
+         "main-2": "bg-gradient-to-br from-fuchsia-600 to-violet-600 shadow-lg text-white hover:bg-fuchsia-400 duration-300 transition-3d hover:scale-105",
+         mainOut: "border-2 border-purple-800 bg-clip-text text-transparent bg-gradient-to-br from-purple-800 to-fuchsia-700 shadow-lg hover:border-fuchsia-400 duration-300 hover:scale-105"
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

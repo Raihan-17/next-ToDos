@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 
 interface UpdateTodoDrawerProps {
   open: boolean;
@@ -47,9 +48,12 @@ export function UpdateTodoDrawer({
       updateTodo({
         id: todo.id,
         todo: text.trim(),
-        completed,
+        completed: completed,
       })
     );
+      toast.success("Todo updated", {
+        description: "The todo was updated successfully.",
+      });
 
     onClose();
   };
@@ -72,7 +76,7 @@ export function UpdateTodoDrawer({
           />
 
           <div className="flex items-center gap-2">
-            <Checkbox
+            <Checkbox className="border-2 border-[#595c7d]"
               checked={completed}
               onCheckedChange={(value) =>{
                 if(value === "indeterminate") return;
@@ -84,10 +88,12 @@ export function UpdateTodoDrawer({
         </div>
 
         <DrawerFooter className="mt-4">
+
+            <Button onClick={handleUpdate}>Update</Button>
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={handleUpdate}>Update</Button>
+          
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

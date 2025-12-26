@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { UpdateTodoDrawer } from "@/components/UpdateTodoDrawer";
 import { Todo } from "@/store/todos/todoTypes";
 import { DeleteTodoDialog } from "@/components/DeleteTodoDialog";
+import { Loader2 } from "lucide-react";
 
 
 
@@ -43,23 +44,24 @@ const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
       dispatch(setSkip(skip - limit));
     }
   };
-//   const handleAddTodo = () => {
-//   if (!newTodo.trim()) return;
-
-//   dispatch(addTodo({ todo: newTodo }));
-//   setNewTodo("");
-// };
-
 
   return (
-    <main className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
+    //frosted container
+    <main className="p-6 md:my-4  max-w-4xl mx-auto  backdrop-blur-md bg-white/30 md:rounded-lg">
+      <h1 className="text-3xl text-[#081d2e] text-center font-bold mb-4">NEXT TODO LIST</h1>
 
-      <div className="flex justify-end mb-4">
-        <Button onClick={() => setModalOpen(true)}>
-          + Add Todo
-        </Button>
-      </div>
+<div className="flex items-center gap-3 justify-between mb-6">
+  <div>
+    <p className="text-[#ddeffe] ">
+      From Plan to Done. Conquer Your Calendar. Tasks Simplified, Focus Maximized.
+    </p>
+  </div>
+
+  <Button onClick={() => setModalOpen(true)}>
+    + Add Todo
+  </Button>
+</div>
+
       
       <AddTodoModal
         open={modalOpen}
@@ -68,83 +70,98 @@ const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
 
 
 
-      {loading && <p>Loading...</p>}
+      {loading && (
+  <div className="flex h-screen flex-col items-center justify-center py-16 gap-2">
+    <Loader2 className="h-15 w-15 animate-spin text-[#bdc1ed]" />
+    <span className="text-xl text-[#d5d7f2]">
+      Loading todos...
+    </span>
+  </div>
+)}
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && (
         <>
-          <table className="w-full border">
+          <table className="w-full overflow-x-auto">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="bg-[#b4b9ef] text-[#073256]">
                 <th className="border p-2">ID</th>
+                {/* <th className="border p-2">ID</th> */}
                 <th className="border p-2">Todo</th>
-                <th className="border p-2">Completed</th>
+                <th className="border p-2">Status</th>
                 <th className="border p-2">Actions</th>
               </tr>
             </thead>
             <tbody>
               {todos.map((todo) => (
                 <tr key={todo.id}>
-                  <td className="border p-2">{todo.id}</td>
-                  <td className="border p-2">{todo.todo}</td>
+                  <td className="border p-2 text-center">{todo.id}</td>
+                  {/* <td className="border p-2 text-center">{todo.userId}</td> */}
+                  <td className="border p-2 text-center font-medium">{todo.todo}</td>
                   <td className="border p-2 text-center">
                       <span
-                        className={`px-2 py-1 rounded text-sm ${
+                        className={`px-2 py-1  rounded text-sm ${
                           todo.completed
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                            ? "bg-green-200 text-green-700"
+                            : "bg-red-300 text-red-800"
                         }`}
                       >
                         {todo.completed ? "Completed" : "Pending"}
                       </span>
                   </td>
-                  <td className="border p-2">
-                    <Button
-                      onClick={() => {
-                        setSelectedTodo(todo);
-                        setDrawerOpen(true);
-                      }}
-                    >
-                      Edit
-                    </Button>
+                <td className="border p-2 align-middle">
+  <div className="flex flex-col gap-2">
+    <Button
+      size="sm"
+      onClick={() => {
+        setSelectedTodo(todo);
+        setDrawerOpen(true);
+      }}
+    >
+      Edit
+    </Button>
 
-                    <Button
-                      variant="destructive"
-                      onClick={() => {
-                        setDeleteOpen(true);
-                        setDeleteTodoId(todo.id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </td>
+    <Button
+      size="sm"
+      variant="destructive"
+      onClick={() => {
+        setDeleteOpen(true);
+        setDeleteTodoId(todo.id);
+      }}
+    >
+      Delete
+    </Button>
+  </div>
+</td>
+
                 </tr>
               ))}
             </tbody>
           </table>
 
-          <div className="flex justify-between items-center mt-4">
-            <button
-              onClick={handlePrev}
-              disabled={skip === 0}
-              className="px-4 py-2 border rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
+         <div className="flex items-center justify-between mt-6">
+           <Button
+             variant="page"
+             size="sm"
+             onClick={handlePrev}
+             disabled={skip === 0}
+           >
+             Previous
+           </Button>
+         
+           <span className="text-sm text-[#7f86d2] font-medium">
+             Page {Math.floor(skip / limit) + 1} of {Math.ceil(total / limit)}
+           </span>
+           <Button
+             className="bg-[#9fa5e5] text-[#0a3d67] hover:bg-[#7f86d2] transform-3d duration-300 hover:scale-115"
+             size="sm"
+             onClick={handleNext}
+             disabled={skip + limit >= total}
+           >
+             Next
+           </Button>
+         </div>
 
-            <span>
-              Page {Math.floor(skip / limit) + 1} of{" "}
-              {Math.ceil(total / limit)}
-            </span>
-
-            <button
-              onClick={handleNext}
-              disabled={skip + limit >= total}
-              className="px-4 py-2 border rounded disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
 
          <UpdateTodoDrawer
            open={drawerOpen}

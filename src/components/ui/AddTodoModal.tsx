@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 interface AddTodoModalProps {
   open: boolean;
@@ -24,7 +25,7 @@ export function AddTodoModal({ open, onClose }: AddTodoModalProps) {
   const dispatch = useAppDispatch();
 
   const [todo, setTodo] = useState("");
-  const [userId, setUserId] = useState("1");
+  const [userId, setUserId] = useState("");
 
   const handleSubmit = () => {
     if (!todo.trim()) return;
@@ -35,6 +36,9 @@ export function AddTodoModal({ open, onClose }: AddTodoModalProps) {
         userId: Number(userId),
       })
     );
+          toast.success("Todo added", {
+        description: "The todo was added successfully.",
+      });
 
     setTodo("");
     setUserId("1");
@@ -70,10 +74,11 @@ export function AddTodoModal({ open, onClose }: AddTodoModalProps) {
         </div>
 
         <DialogFooter>
+          <Button onClick={handleSubmit}>Add Todo</Button>
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit}>Add Todo</Button>
+          
         </DialogFooter>
       </DialogContent>
     </Dialog>

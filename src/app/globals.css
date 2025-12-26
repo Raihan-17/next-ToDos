@@ -121,5 +121,20 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: url("/todo-bg.png"); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+  }
+    body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35); /* overlay strength */
+    z-index: -1;
   }
 }
+
+

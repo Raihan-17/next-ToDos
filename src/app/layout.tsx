@@ -3,12 +3,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ReduxProvider } from "@/store";
 import { Toaster } from "sonner";
+import { Tektur } from "next/font/google";
 
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
+const tektur = Tektur({
+  variable: "--font-tektur",
+  subsets: ["latin"],
+});
 
 // const geistMono = Geist_Mono({
 //   variable: "--font-geist-mono",
@@ -27,8 +28,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      <body 
+        className={`${tektur.className} `}
       >
         <ReduxProvider>{children}</ReduxProvider>
         <Toaster richColors position="top-right" />

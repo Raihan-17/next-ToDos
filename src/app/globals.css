@@ -121,9 +121,9 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: url("/todo-bg.png"); 
+    background-image: url("/bg-2.jpg"); 
     background-size: cover;
-    background-position: center;
+    /* background-position: ; */
     background-repeat: no-repeat;
     background-attachment: fixed;
     position: relative;
@@ -132,7 +132,7 @@
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.35); /* overlay strength */
+    background: rgba(0, 0, 0, 0.65); 
     z-index: -1;
   }
 }

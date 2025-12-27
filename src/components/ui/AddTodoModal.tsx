@@ -50,22 +50,22 @@ export function AddTodoModal({ open, onClose }: AddTodoModalProps) {
       <DialogContent>
         <DialogHeader>
           <DialogHeader>
-  <DialogTitle>Add New Todo</DialogTitle>
-  <DialogDescription>
+  <DialogTitle className=" text-violet-950 font-bold">Add New Todo</DialogTitle>
+  <DialogDescription className="">
     Enter todo details and assign a user.
   </DialogDescription>
 </DialogHeader>
 
         </DialogHeader>
 
-        <div className="space-y-4">
-          <Input
+        <div className="space-y-4 ">
+          <Input className="border border-purple-800 text-violet-950" 
             placeholder="Todo description"
             value={todo}
             onChange={(e) => setTodo(e.target.value)}
           />
 
-          <Input
+          <Input className="border border-purple-800 text-violet-950"
             type="number"
             placeholder="User ID"
             value={userId}
@@ -74,8 +74,8 @@ export function AddTodoModal({ open, onClose }: AddTodoModalProps) {
         </div>
 
         <DialogFooter>
-          <Button onClick={handleSubmit}>Add Todo</Button>
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="main" onClick={handleSubmit}>Add Todo</Button>
+          <Button variant="mainOut" onClick={onClose}>
             Cancel
           </Button>
           

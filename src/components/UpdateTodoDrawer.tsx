@@ -62,35 +62,35 @@ export function UpdateTodoDrawer({
     <Drawer open={open} onOpenChange={onClose}>
       <DrawerContent className="p-4">
         <DrawerHeader>
-          <DrawerTitle>Edit Todo</DrawerTitle>
-          <DrawerDescription>
+          <DrawerTitle className="text-violet-950 font-bold">Edit Todo</DrawerTitle>
+          <DrawerDescription className="text-violet-900">
             Update the details of the todo item.
           </DrawerDescription>
         </DrawerHeader>
 
-        <div className="space-y-4">
-          <Input
+        <div className="space-y-4 ">
+          <Input className="border border-purple-800 text-violet-950"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Todo text"
           />
 
           <div className="flex items-center gap-2">
-            <Checkbox className="border-2 border-[#595c7d]"
+            <Checkbox className="border-2 border-purple-800"
               checked={completed}
               onCheckedChange={(value) =>{
                 if(value === "indeterminate") return;
                 setCompleted(value);
               }}
             />
-            <span>Completed</span>
+            <span className=" text-violet-900">Completed</span>
           </div>
         </div>
 
         <DrawerFooter className="mt-4">
 
-            <Button onClick={handleUpdate}>Update</Button>
-          <Button variant="outline" onClick={onClose}>
+            <Button variant="main" onClick={handleUpdate}>Update</Button>
+          <Button variant="mainOut" onClick={onClose}>
             Cancel
           </Button>
           

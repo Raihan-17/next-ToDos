@@ -1,11 +1,7 @@
 
 "use client";
 
-import { useEffect, useRef } from "react";
-import { fetchTodos } from "@/store/todos/todoThunks";
-import { setSkip } from "@/store/todos/todoSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { addTodo } from "@/store/todos/todoThunks";
+import { useGetTodosQuery } from "@/store/api/todoApi";
 import { useState } from "react";
 import { AddTodoModal } from "@/components/ui/AddTodoModal";
 import { Button } from "@/components/ui/button";
@@ -17,43 +13,33 @@ import { TodoCard } from "@/components/TodoCard";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
-  const dispatch = useAppDispatch();
-  const { todos, loading, error, skip, limit, total } = useAppSelector(
-    (state) => state.todos
-  );
-  const [newTodo, setNewTodo] = useState("");
+
+  const [skip, setSkip] = useState(0);
+  const limit = 10;
+  const {data,isLoading,error}=useGetTodosQuery({skip,limit});
+
+  const todos= data?.todos??[];
+  const total= data?.total??[];
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteTodoId, setDeleteTodoId] = useState<number | null>(null);
   const [showTable, setShowTable] = useState(false);
-  const carouselRef = useRef<HTMLDivElement | null>(null);
 
 
-
-  useEffect(() => {
-    dispatch(fetchTodos({ skip, limit }));
-  }, [dispatch, skip, limit]);
-
-  const handleNext = () => {
-    if (skip + limit < total) {
-      dispatch(setSkip(skip + limit));
-    }
-  };
-
-  const handlePrev = () => {
-    if (skip > 0) {
-      dispatch(setSkip(skip - limit));
-    }
-  };
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-  if (!carouselRef.current) return;
-  e.preventDefault();
-  carouselRef.current.scrollLeft += e.deltaY;
+const handleNext = () => {
+  if (skip + limit < total) {
+      setSkip((prev) => prev + limit);
+  }
 };
 
-
+const handlePrev = () => {
+  if (skip > 0) {
+    setSkip((prev) => prev - limit);
+  }
+};
 
   return (
     
@@ -85,7 +71,7 @@ export default function HomePage() {
     <AddTodoModal open={modalOpen} onClose={() => setModalOpen(false)} />
 
     {/* Loading */}
-    {loading && (
+    {isLoading && (
       <div className="flex flex-col items-center justify-center py-20 gap-3">
         <Loader2 className="h-12 w-12 animate-spin text-fuchsia-500" />
         <span className="text-lg text-violet-200">Loading todos...</span>
@@ -93,9 +79,9 @@ export default function HomePage() {
     )}
 
     {/* ERROR */}
-    {error && <p className="text-red-500 text-3xl text-center">{error}</p>}
+    {error && <p className="text-red-500 text-4xl text-center">Failed to load todos</p>}
 
-    {!loading && !error && !showTable && (
+    {!isLoading && !error && !showTable && (
 <div className="relative">
   
   <div className="
@@ -136,7 +122,7 @@ export default function HomePage() {
 
     )}
 
-    {!loading && !error && showTable && (
+    {!isLoading && !error && showTable && (
       <>
         <div className="overflow-x-auto">
           <table className="w-full bg-purple-100 rounded-lg overflow-hidden">

@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useAppDispatch } from "@/store/hooks";
-import { addTodo } from "@/store/todos/todoThunks";
-
 import {
   Dialog,
   DialogContent,
@@ -15,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useAddTodoMutation } from "@/store/api/todoApi";
 
 interface AddTodoModalProps {
   open: boolean;
@@ -22,28 +20,32 @@ interface AddTodoModalProps {
 }
 
 export function AddTodoModal({ open, onClose }: AddTodoModalProps) {
-  const dispatch = useAppDispatch();
-
+  const [addTodo, { isLoading }] = useAddTodoMutation();
   const [todo, setTodo] = useState("");
   const [userId, setUserId] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (!todo.trim()) return;
-
-    dispatch(
-      addTodo({
+    try{
+      await addTodo({
         todo,
         userId: Number(userId),
-      })
-    );
-          toast.success("Todo added", {
+        completed: false,
+      }).unwrap();
+
+      toast.success("Todo added", {
         description: "The todo was added successfully.",
       });
 
     setTodo("");
     setUserId("1");
     onClose();
-  };
+  } catch (error) {
+    toast.error("Failed to add todo", {
+      description: "Please try again later.",
+    });
+  }
+};
 
   return (
     <Dialog open={open} onOpenChange={onClose}>

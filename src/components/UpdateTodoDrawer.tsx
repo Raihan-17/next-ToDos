@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Todo } from "@/store/todos/todoTypes";
 import { useAppDispatch } from "@/store/hooks";
-import { updateTodo } from "@/store/todos/todoThunks";
+import { useUpdateTodoMutation } from "@/store/api/todoApi";
 
 import {
   Drawer,
@@ -29,7 +29,7 @@ export function UpdateTodoDrawer({
   onClose,
   todo,
 }: UpdateTodoDrawerProps) {
-  const dispatch = useAppDispatch();
+  const [updateTodo , { isLoading }] = useUpdateTodoMutation();
 
   const [text, setText] = useState("");
   const [completed, setCompleted] = useState(false);
@@ -41,19 +41,23 @@ export function UpdateTodoDrawer({
     }
   }, [todo]);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (!todo) return;
 
-    dispatch(
-      updateTodo({
+    try {
+      await updateTodo({
         id: todo.id,
         todo: text.trim(),
         completed: completed,
-      })
-    );
+      });
       toast.success("Todo updated", {
         description: "The todo was updated successfully.",
       });
+    } catch (error) {
+      toast.error("Failed to update todo", {
+        description: "There was an error updating the todo.",
+      });
+    }
 
     onClose();
   };

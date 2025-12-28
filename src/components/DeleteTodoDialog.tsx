@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppDispatch } from "@/store/hooks";
-import { deleteTodo } from "@/store/todos/todoThunks";
+import { useDeleteTodoMutation } from "@/store/api/todoApi";
 import { toast } from "sonner";
 
 import {
@@ -26,18 +26,23 @@ export function DeleteTodoDialog({
   onClose,
   todoId,
 }: DeleteTodoDialogProps) {
-  const dispatch = useAppDispatch();
 
-  const handleDelete = async () => {
+  const [deleteTodo] = useDeleteTodoMutation();
+
+   const handleDelete = async () => {
     if (!todoId) return;
 
-    await dispatch(deleteTodo({ id: todoId }));
+    try {
+      await deleteTodo(todoId).unwrap();
 
-    toast.success("Todo deleted", {
-      description: "The todo was removed successfully.",
-    });
+      toast.success("Todo deleted", {
+        description: "The todo was removed successfully.",
+      });
 
-    onClose();
+      onClose();
+    } catch {
+      toast.error("Failed to delete todo");
+    }
   };
 
   return (

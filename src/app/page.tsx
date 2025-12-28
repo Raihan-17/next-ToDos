@@ -19,7 +19,7 @@ export default function HomePage() {
   const {data,isLoading,error}=useGetTodosQuery({skip,limit});
 
   const todos= data?.todos??[];
-  const total= data?.total??[];
+  const total= data?.total?? 0;
   
   const [modalOpen, setModalOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
